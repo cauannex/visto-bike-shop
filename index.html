@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description"
+        content="Protótipo conceitual Visto Bike Shop. Bicicletas, manutenção e conversão elétrica na Vila Mariana.">
+    <title>Visto — A cidade é sua pista.</title>
+    <style>
+        :root {
+            --green: #b5fb39;
+            --black: #11130f;
+            --muted: #a0a497
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 90px
+        }
+
+        body {
+            margin: 0;
+            background: var(--black);
+            color: #f4f5ef;
+            font-family: Arial, Helvetica, sans-serif
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        button {
+            font: inherit;
+            cursor: pointer
+        }
+
+        a:focus-visible,
+        button:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 3px solid var(--green);
+            outline-offset: 5px
+        }
+
+        header {
+            height: 86px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 5;
+            border-bottom: 1px solid #ffffff24
+        }
+
+        .logo {
+            font-weight: 1000;
+            font-size: 34px;
+            font-style: italic;
+            letter-spacing: -3px
+        }
+
+        .logo small {
+            font-size: 9px;
+            display: block;
+            letter-spacing: 4px;
+            font-style: normal;
+            margin-left: 4px
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px
+        }
+
+        .pill {
+            border: 1px solid #ffffff60;
+            padding: 13px 21px;
+            border-radius: 30px;
+            font-size: 12px
+        }
+
+        .hero {
+            min-height: 850px;
+            height: 100svh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            padding: 140px 6% 100px
+        }
+
+        .hero:before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #10140fed 0%, #10140f95 45%, #10140f15), linear-gradient(0deg, #11130f, transparent 40%), url('assets/bike.jpg') center 58%/cover;
+            filter: saturate(.55);
+            z-index: -1
+        }
+
+        .eyebrow {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            display: flex;
+            gap: 12px;
+            align-items: center
+        }
+
+        .eyebrow:before {
+            content: '';
+            width: 24px;
+            height: 2px;
+            background: var(--green)
+        }
+
+        h1 {
+            font-size: clamp(65px, 8.8vw, 142px);
+            line-height: .88;
+            letter-spacing: -.065em;
+            text-transform: uppercase;
+            margin: 32px 0;
+            font-weight: 950
+        }
+
+        h1 em {
+            color: var(--green);
+            font-style: italic
+        }
+
+        p {
+            line-height: 1.7;
+            color: var(--muted);
+            font-size: 15px
+        }
+
+        .hero p {
+            max-width: 365px
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            flex-wrap: wrap
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            background: var(--green);
+            color: #152006;
+            padding: 18px 26px;
+            border-radius: 3px;
+            font-size: 13px;
+            font-weight: bold;
+            border: 0
+        }
+
+        .btn.ghost {
+            background: transparent;
+            color: white;
+            border: 1px solid #ffffff60
+        }
+
+        .hero-bottom {
+            position: absolute;
+            bottom: 35px;
+            left: 6%;
+            right: 6%;
+            display: flex;
+            justify-content: space-between;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: #c1c5b8
+        }
+
+        .vertical {
+            position: absolute;
+            right: 3%;
+            writing-mode: vertical-rl;
+            letter-spacing: 5px;
+            font-size: 10px
+        }
+
+        .ticker {
+            background: var(--green);
+            color: #142005;
+            padding: 20px;
+            overflow: hidden;
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-align: center
+        }
+
+        .ticker span {
+            padding: 0 25px
+        }
+
+        section {
+            padding: 100px 6%
+        }
+
+        .heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 30px;
+            margin-bottom: 40px
+        }
+
+        h2 {
+            font-size: clamp(44px, 5.5vw, 84px);
+            line-height: .95;
+            letter-spacing: -.05em;
+            text-transform: uppercase;
+            margin: 20px 0
+        }
+
+        h2 em {
+            font-style: normal;
+            color: var(--green)
+        }
+
+        .heading p {
+            max-width: 320px
+        }
+
+        .filter {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 30px 0
+        }
+
+        .filter button,
+        .arrow {
+            background: transparent;
+            color: #c4c7bd;
+            border: 1px solid #41463a;
+            padding: 11px 19px;
+            border-radius: 30px;
+            font-size: 12px
+        }
+
+        .filter button[aria-pressed=true] {
+            background: var(--green);
+            color: #101a04;
+            border-color: var(--green)
+        }
+
+        .catalog {
+            display: flex;
+            gap: 20px;
+            overflow: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: thin;
+            scrollbar-color: var(--green) #25291f;
+            padding-bottom: 20px
+        }
+
+        .card {
+            flex: 0 0 32%;
+            min-width: 290px;
+            background: #1d2118;
+            scroll-snap-align: start;
+            padding: 24px;
+            border: 1px solid #ffffff0a;
+            border-radius: 5px
+        }
+
+        .card[hidden] {
+            display: none
+        }
+
+        .tag {
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--green)
+        }
+
+        .card svg {
+            width: 100%;
+            height: 230px;
+            transition: transform .4s
+        }
+
+        .card:hover svg {
+            transform: translateY(-6px) rotate(-3deg)
+        }
+
+        .card h3 {
+            font-size: 25px;
+            margin: 8px 0
+        }
+
+        .card p {
+            font-size: 12px;
+            margin: 0
+        }
+
+        .card a {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #ffffff21;
+            margin-top: 22px;
+            padding-top: 20px;
+            font-size: 12px
+        }
+
+        .catalog-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            font-size: 11px;
+            color: var(--muted)
+        }
+
+        .ride {
+            padding: 0;
+            height: 210vh;
+            position: relative
+        }
+
+        .ride-sticky {
+            position: sticky;
+            top: 0;
+            height: 100svh;
+            min-height: 600px;
+            overflow: hidden;
+            background: var(--green);
+            color: #142006;
+            padding: 70px 6%
+        }
+
+        .ride h2 {
+            font-size: clamp(60px, 9vw, 145px);
+            position: relative;
+            z-index: 2;
+            max-width: 800px
+        }
+
+        .ride p {
+            color: #3c4a2b;
+            max-width: 340px
+        }
+
+        .skyline {
+            position: absolute;
+            bottom: 24%;
+            left: -10%;
+            width: 140%;
+            height: 28%;
+            opacity: .15;
+            background: repeating-linear-gradient(90deg, transparent 0 20px, #31441b 20px 85px, transparent 85px 110px);
+            clip-path: polygon(0 30%, 10% 30%, 10% 5%, 18% 5%, 18% 45%, 30% 45%, 30% 10%, 38% 10%, 38% 0, 45% 0, 45% 40%, 60% 40%, 60% 10%, 70% 10%, 70% 40%, 80% 40%, 80% 20%, 100% 20%, 100% 100%, 0 100%)
+        }
+
+        .road {
+            position: absolute;
+            bottom: 0;
+            height: 24%;
+            background: #1b2414;
+            width: 120%;
+            left: -10%;
+            transform: rotate(-4deg)
+        }
+
+        .road:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            height: 3px;
+            background: repeating-linear-gradient(90deg, #b5fb3980 0 80px, transparent 80px 150px)
+        }
+
+        .rider {
+            position: absolute;
+            width: min(480px, 60vw);
+            bottom: 15%;
+            left: 48%;
+            z-index: 3;
+            filter: drop-shadow(12px 22px 6px #0003)
+        }
+
+        .ride-counter {
+            position: absolute;
+            bottom: 30px;
+            left: 6%;
+            font-size: 10px;
+            color: var(--green);
+            z-index: 4;
+            letter-spacing: 3px
+        }
+
+        .services {
+            background: #e9ece2;
+            color: #171d11
+        }
+
+        .services p {
+            color: #636c5a
+        }
+
+        .services .eyebrow:before {
+            background: #526c28
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid #bac0b0
+        }
+
+        .service {
+            padding: 35px 25px 30px 0;
+            border-bottom: 1px solid #bac0b0
+        }
+
+        .service+.service {
+            padding-left: 25px;
+            border-left: 1px solid #bac0b0
+        }
+
+        .service .num {
+            font-size: 12px;
+            color: #637b42
+        }
+
+        .service h3 {
+            font-size: 30px;
+            letter-spacing: -1px;
+            max-width: 250px
+        }
+
+        .service a {
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px
+        }
+
+        .electric {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 6%;
+            padding-top: 120px;
+            padding-bottom: 120px
+        }
+
+        .electric-art {
+            background: radial-gradient(ellipse, #48692455, transparent 65%);
+            position: relative
+        }
+
+        .electric-art svg {
+            width: 100%;
+            height: 350px
+        }
+
+        .electric-art .bolt {
+            position: absolute;
+            left: 40%;
+            top: 5%;
+            font-size: 150px;
+            color: var(--green);
+            opacity: .6
+        }
+
+        .visit {
+            background: var(--green);
+            color: #17210c;
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 50px
+        }
+
+        .visit p {
+            color: #455330
+        }
+
+        .visit .btn {
+            background: #152006;
+            color: white
+        }
+
+        .visit h2 {
+            font-size: clamp(50px, 6vw, 90px)
+        }
+
+        .address {
+            border-top: 1px solid #607a3540;
+            padding-top: 25px;
+            align-self: end
+        }
+
+        .address a {
+            display: block;
+            margin: 15px 0;
+            font-size: 15px
+        }
+
+        footer {
+            padding: 35px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px
+        }
+
+        footer p {
+            font-size: 10px;
+            max-width: 440px
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity .7s, transform .7s
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: none
+        }
+
+        .floating {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 10;
+            background: var(--green);
+            color: #152006;
+            box-shadow: 0 4px 30px #0005;
+            border-radius: 40px;
+            padding: 16px 24px;
+            font-weight: bold;
+            font-size: 12px
+        }
+
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--green);
+            z-index: 20;
+            transform-origin: left;
+            width: 100%;
+            transform: scaleX(0)
+        }
+
+        @media(max-width:760px) {
+            header {
+                height: 75px
+            }
+
+            nav {
+                display: none
+            }
+
+            header .pill {
+                font-size: 10px
+            }
+
+            .hero {
+                min-height: 730px;
+                padding-top: 120px
+            }
+
+            .hero:before {
+                background-position: 62% center
+            }
+
+            .hero-bottom {
+                font-size: 8px
+            }
+
+            .vertical {
+                display: none
+            }
+
+            .heading {
+                display: block
+            }
+
+            section {
+                padding: 70px 6%
+            }
+
+            .card {
+                flex-basis: 84%
+            }
+
+            .service-grid,
+            .electric,
+            .visit {
+                grid-template-columns: 1fr
+            }
+
+            .service+.service {
+                padding-left: 0;
+                border-left: 0
+            }
+
+            .rider {
+                left: 25%;
+                width: 75vw
+            }
+
+            .ride-sticky {
+                padding-top: 70px
+            }
+
+            .ride h2 {
+                font-size: 64px
+            }
+
+            .electric {
+                gap: 30px
+            }
+
+            .electric-art {
+                order: 2
+            }
+
+            .electric-art svg {
+                height: 250px
+            }
+
+            footer {
+                align-items: start;
+                flex-direction: column;
+                padding-bottom: 100px
+            }
+
+            .ticker {
+                font-size: 10px;
+                white-space: nowrap
+            }
+
+            .ticker span {
+                padding: 0 10px
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            html {
+                scroll-behavior: auto
+            }
+
+            *,
+            *:before,
+            *:after {
+                transition: none !important
+            }
+
+            .reveal {
+                opacity: 1;
+                transform: none
+            }
+
+            .ride {
+                height: auto
+            }
+
+            .ride-sticky {
+                position: relative
+            }
+
+            .rider {
+                transform: none !important
+            }
+        }
+
+        /* Esteira contínua e preenchimento dos botões transparentes. */
+        .ticker {
+            padding-left: 0;
+            padding-right: 0;
+            text-align: left
+        }
+
+        .ticker-track {
+            display: flex;
+            width: max-content;
+            animation: visto-ticker 24s linear infinite
+        }
+
+        .ticker-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-shrink: 0;
+            min-width: 100vw;
+            white-space: nowrap;
+            padding-left: 25px
+        }
+
+        @keyframes visto-ticker {
+            from {
+                transform: translateX(0)
+            }
+
+            to {
+                transform: translateX(-50%)
+            }
+        }
+
+        .pill,
+        .btn.ghost,
+        .arrow,
+        .filter button[aria-pressed="false"] {
+            background-image: linear-gradient(var(--green), var(--green));
+            background-repeat: no-repeat;
+            background-position: left center;
+            background-size: 0% 100%;
+            transition: background-size .45s ease, color .3s ease, border-color .3s ease
+        }
+
+        .pill:hover,
+        .pill:focus-visible,
+        .btn.ghost:hover,
+        .btn.ghost:focus-visible,
+        .arrow:hover,
+        .arrow:focus-visible,
+        .filter button[aria-pressed="false"]:hover,
+        .filter button[aria-pressed="false"]:focus-visible {
+            background-size: 100% 100%;
+            color: #152006;
+            border-color: var(--green)
+        }
+
+        @media(max-width:760px) {
+            .ticker-group {
+                padding-left: 10px
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            .ticker-track {
+                animation: none
+            }
+
+            .ticker-track .ticker-group[aria-hidden="true"] {
+                display: none
+            }
+
+            .ticker-group {
+                white-space: normal;
+                flex-wrap: wrap;
+                gap: 8px;
+                width: 100vw;
+                padding-right: 10px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress"></div><svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+        <defs>
+            <symbol id="bicycle" viewBox="0 0 600 340">
+                <g fill="none" stroke="#141a12" stroke-width="13">
+                    <circle cx="135" cy="225" r="91" />
+                    <circle cx="470" cy="225" r="91" />
+                </g>
+                <g fill="none" stroke="#89927f" stroke-width="2">
+                    <circle cx="135" cy="225" r="78" />
+                    <circle cx="470" cy="225" r="78" />
+                    <path
+                        d="M135 147v156m-78-78h156m-133-55 110 110m0-110L80 280M470 147v156m-78-78h156m-133-55 110 110m0-110L415 280" />
+                </g>
+                <g fill="none" stroke="currentColor" stroke-width="13" stroke-linejoin="round">
+                    <path d="m135 225 90-142 80 142H135l259-125-89 125m89-125 76 125M394 100l-16-45h48M225 83l-10-30" />
+                </g>
+                <path d="M190 51h58" stroke="#30382b" stroke-width="13" stroke-linecap="round" />
+                <g fill="none" stroke="#56604a" stroke-width="5">
+                    <circle cx="305" cy="225" r="22" />
+                    <path d="m305 225 28 22h22m-50-22-28-22h-22" />
+                </g>
+            </symbol>
+        </defs>
+    </svg>
+    <header><a class="logo" href="#home" aria-label="Visto início">VISTO<span
+                style="color:var(--green)">↗</span><small>BIKE SHOP</small></a>
+        <nav aria-label="Principal"><a href="#bikes">Bicicletas</a><a href="#oficina">Oficina</a><a
+                href="#eletrica">Conversão elétrica</a></nav><a class="pill" href="#visite">Vem pra Visto ↗</a>
+    </header>
+    <main>
+        <section class="hero" id="home">
+            <div>
+                <div class="eyebrow">Vila Mariana, São Paulo</div>
+                <h1>A cidade<br>é sua<br><em>pista.</em></h1>
+                <p>Da primeira pedalada ao próximo desafio.<br>Encontre seu ritmo. A gente cuida da bike.</p>
+                <div class="actions"><a class="btn" href="#bikes">Encontre sua bike <span>↗</span></a><a
+                        class="btn ghost" href="#oficina">Conheça a oficina</a></div>
+            </div>
+            <div class="vertical">DUAS RODAS. INFINITAS POSSIBILIDADES.</div>
+            <div class="hero-bottom"><span>BICICLETAS / OFICINA / E-BIKES</span><a href="#bikes">ROLE PARA EXPLORAR
+                    ↓</a></div>
+        </section>
+        <div class="ticker">
+            <div class="ticker-track">
+                <div class="ticker-group">SEU PRÓXIMO ROLÊ COMEÇA AQUI <span>✳</span> DA CLÁSSICA À ELÉTRICA
+                    <span>✳</span> VISTO BIKE SHOP <span>✳</span></div>
+                <div class="ticker-group" aria-hidden="true">SEU PRÓXIMO ROLÊ COMEÇA AQUI <span>✳</span> DA CLÁSSICA À
+                    ELÉTRICA <span>✳</span> VISTO BIKE SHOP <span>✳</span></div>
+            </div>
+        </div>
+        <section id="bikes">
+            <div class="heading reveal">
+                <div>
+                    <div class="eyebrow">Encontre seu estilo</div>
+                    <h2>Qual é a<br>sua <em>próxima?</em></h2>
+                </div>
+                <p>Cidade, trilha ou um novo jeito de se mover. Explore possibilidades e converse com a equipe.</p>
+            </div>
+            <div class="filter" role="group" aria-label="Categorias"><button aria-pressed="true"
+                    data-filter="all">Todas</button><button aria-pressed="false" data-filter="mtb">Mountain
+                    bike</button><button aria-pressed="false" data-filter="urban">Urbanas</button><button
+                    aria-pressed="false" data-filter="electric">Elétricas</button></div>
+            <div class="catalog" tabindex="0" aria-label="Vitrine ilustrativa de bicicletas"></div>
+            <div class="catalog-controls"><span>Ilustrações conceituais · modelos e disponibilidade sob consulta.</span>
+                <div><button class="arrow" data-dir="-1" aria-label="Anterior">←</button> <button class="arrow"
+                        data-dir="1" aria-label="Próximo">→</button></div>
+            </div>
+        </section>
+        <section class="ride" aria-label="Cena de ciclismo animada pela rolagem">
+            <div class="ride-sticky">
+                <div class="eyebrow">Menos trânsito. Mais movimento.</div>
+                <h2>Desacelere<br>o mundo.<br>Acelere <i>você.</i></h2>
+                <p>Um novo caminho para o trabalho.<br>Uma volta sem destino. Só vai.</p>
+                <div class="skyline"></div>
+                <div class="road"></div><svg class="rider" viewBox="0 0 600 400"
+                    aria-label="Ilustração de ciclista na cidade">
+                    <g transform="translate(0 60)" style="color:#f1f5e9">
+                        <use href="#bicycle" />
+                    </g>
+                    <path d="m280 118-49 59 69 38-15 65m-5-162 65 38 48-3" stroke="#18220f" stroke-width="24"
+                        fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="m281 119 34-58 54 36-23 59" fill="#fafcef" />
+                    <circle cx="379" cy="62" r="23" fill="#18220f" />
+                    <path d="m356 50 41 2" stroke="#fafcef" stroke-width="12" />
+                </svg>
+                <div class="ride-counter">VISTO / MOVA-SE NO SEU RITMO</div>
+            </div>
+        </section>
+        <section class="services" id="oficina">
+            <div class="heading reveal">
+                <div>
+                    <div class="eyebrow">Cuidado em cada detalhe</div>
+                    <h2>Sua bike.<br>Nas mãos <i>certas.</i></h2>
+                </div>
+                <p>Uma regulagem faz diferença no pedal. Uma revisão faz diferença no caminho inteiro.</p>
+            </div>
+            <div class="service-grid">
+                <article class="service reveal"><span class="num">01 / REVISÃO</span>
+                    <h3>Pronta pro próximo rolê.</h3>
+                    <p>Revisão completa, lubrificação de cubos, movimento central e caixa de direção.</p><a
+                        data-chat="Quero saber sobre a revisão completa.">Conversar sobre revisão ↗</a>
+                </article>
+                <article class="service reveal"><span class="num">02 / AJUSTES</span>
+                    <h3>Cada detalhe no lugar.</h3>
+                    <p>Regulagem de câmbios e freios, alinhamento de rodas e lavagem da bicicleta.</p><a
+                        data-chat="Quero saber sobre os ajustes da oficina.">Cuidar da minha bike ↗</a>
+                </article>
+                <article class="service reveal"><span class="num">03 / PERSONALIZAÇÃO</span>
+                    <h3>Uma bike com a sua cara.</h3>
+                    <p>Montagem personalizada para transformar suas ideias no seu próximo pedal.</p><a
+                        data-chat="Quero conversar sobre montagem personalizada.">Planejar minha montagem ↗</a>
+                </article>
+            </div>
+        </section>
+        <section class="electric" id="eletrica">
+            <div class="electric-art reveal"><span class="bolt">ϟ</span><svg style="color:#b5fb39"
+                    aria-label="Bicicleta ilustrativa">
+                    <use href="#bicycle" />
+                </svg></div>
+            <div class="reveal">
+                <div class="eyebrow">Uma nova energia</div>
+                <h2>Seu pedal.<br>Outro <em>nível.</em></h2>
+                <p>Já pensou em transformar sua bicicleta em uma e-bike? Conheça a conversão elétrica e consulte a
+                    equipe sobre compatibilidade, montagem e opções para sua bike.</p><a class="btn"
+                    data-chat="Quero saber se minha bicicleta pode receber conversão elétrica.">Explorar conversão
+                    elétrica ↗</a>
+            </div>
+        </section>
+        <section class="visit" id="visite">
+            <div class="reveal">
+                <div class="eyebrow">O próximo passo é um pedal</div>
+                <h2>Tem um lugar<br>pra você<br><i>na Visto.</i></h2><a class="btn"
+                    data-chat="Olá! Vi o protótipo da Visto e quero saber mais.">Fale com a equipe ↗</a>
+            </div>
+            <div class="address">
+                <div class="eyebrow">Vila Mariana / SP</div>
+                <h3>Vem conhecer de perto.</h3>
+                <p>Rua Domingos de Morais, 1845<br>Vila Mariana · São Paulo – SP<br>04009-003</p><a
+                    href="https://www.google.com/maps/search/?api=1&query=Visto+Bike+Shop+Rua+Domingos+de+Morais+1845"
+                    target="_blank" rel="noopener">Traçar minha rota ↗</a><a href="tel:+551155390660">(11) 5539-0660
+                    ↗</a><a href="https://www.instagram.com/vistobikeshop/" target="_blank"
+                    rel="noopener">@vistobikeshop ↗</a>
+            </div>
+        </section>
+    </main>
+    <footer><a class="logo" href="#home">VISTO↗<small>BIKE SHOP</small></a>
+        <p>Protótipo conceitual independente para apresentação. Identidade visual provisória; fotografia e bikes
+            ilustrativas. Não representa estoque, oferta ou site oficial da loja.</p><span
+            style="font-size:10px;color:#a0a497">FEITO PARA MOVER.</span>
+    </footer><a class="floating" data-chat="Olá! Gostaria de falar com a Visto Bike Shop.">Vamos conversar ↗</a>
+    <script>
+        const catalog = document.querySelector('.catalog'); const products = [['mtb', 'TRILHA / AVENTURA', 'Seu próximo desafio.', '#b5fb39', 'Mountain bike'], ['urban', 'CIDADE / LIBERDADE', 'Seu ritmo na cidade.', '#e7b963', 'Urbana'], ['electric', 'ENERGIA / MOBILIDADE', 'Vá mais longe.', '#d0d9ec', 'Elétrica'], ['mtb', 'TERRA / MOVIMENTO', 'Explore novos caminhos.', '#ee8c66', 'Mountain bike']]; products.forEach(([cat, tag, title, color, name]) => { const c = document.createElement('article'); c.className = 'card'; c.dataset.category = cat; c.innerHTML = `<span class="tag">${tag}</span><svg style="color:${color}" role="img" aria-label="Ilustração conceitual de bicicleta"><use href="#bicycle"/></svg><p>${name} / seleção ilustrativa</p><h3>${title}</h3><a data-chat="Quero conhecer as opções de bike da categoria ${name}.">Consultar opções <span>↗</span></a>`; catalog.append(c) }); document.querySelectorAll('[data-chat]').forEach(a => { a.href = 'https://wa.me/551155390660?text=' + encodeURIComponent(a.dataset.chat); a.target = '_blank'; a.rel = 'noopener' }); document.querySelectorAll('[data-filter]').forEach(b => b.addEventListener('click', () => { document.querySelectorAll('[data-filter]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); document.querySelectorAll('.card').forEach(c => c.hidden = b.dataset.filter !== 'all' && c.dataset.category !== b.dataset.filter); catalog.scrollLeft = 0 })); document.querySelectorAll('[data-dir]').forEach(b => b.addEventListener('click', () => catalog.scrollBy({ left: catalog.clientWidth * .8 * Number(b.dataset.dir), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }))); const observer = new IntersectionObserver(items => items.forEach(x => { if (x.isIntersecting) { x.target.classList.add('visible'); observer.unobserve(x.target) } }), { threshold: .12 }); document.querySelectorAll('.reveal').forEach(e => observer.observe(e)); const ride = document.querySelector('.ride'), rider = document.querySelector('.rider'), sky = document.querySelector('.skyline'); let ticking = false; function draw() { const max = document.documentElement.scrollHeight - innerHeight; document.querySelector('.progress').style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`; if (!matchMedia('(prefers-reduced-motion: reduce)').matches) { const p = Math.max(0, Math.min(1, -ride.getBoundingClientRect().top / (ride.offsetHeight - innerHeight))); rider.style.transform = `translateX(${(p - .5) * innerWidth * .36}px) rotate(-4deg)`; sky.style.transform = `translateX(${-p * 120}px)` } ticking = false } addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(draw); ticking = true } }, { passive: true }); addEventListener('resize', draw); draw();
+    </script>
+</body>
+
+</html>
